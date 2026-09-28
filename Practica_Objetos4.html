@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pestaña title Objetos 4</title>
+</head>
+<body>
+    <main>
+
+    </main>
+    <script>
+const empleado = {
+    nombre: "Ana",
+    edad: 35,
+    activo: true,
+    direccion: {
+        ciudad: "Mendoza",
+        pais: "Argentina"
+    },
+    habilidades: [
+        "JavaScript",
+        "Java",
+        "SQL"
+    ],
+    salario: 850000,
+    saludar() {
+        return `Hola, soy ${this.nombre}`;
+    }
+};
+function inspeccionObjeto(emp){
+    console.log("Arranco el Analisis ");
+    for(const clave of Object.keys(emp)){
+        const valor = emp[clave];
+        if(Array.isArray(valor)){
+            console.log("tenemos un array "),
+            console.log(`Elementos del ARRAY: ${valor}`)
+        }else if(typeof valor === "function"){
+            console.log("tenemos una funcion"),
+            console.log(`la funcion:  ${valor}`);
+        }else if(typeof valor === "object"){
+            console.log("Tenemos un objeto dentro"),
+            console.log(`el objeto : ${valor}`);
+        }else{
+            console.log(`tipo de dato ${typeof valor}`),
+            console.log(`este valor es: ${valor}`)
+        }
+    }
+    return 'El Analisis a terminado exitos';
+}
+console.log("Ver punto 1 inspeccion --",inspeccionObjeto(empleado));
+console.log("---------------------------")
+
+function buscarPropiedad(obj,valorBuscado){
+    //cuando toca habilidades en la recursividad no devulve claves
+    //  sino posiciones el object.key
+    const claves = Object.keys(obj);
+    for(const recorre_claves of claves){
+        const valor= obj[recorre_claves];
+        if(valor === valorBuscado){
+            console.log("Encontramos "),
+            console.log(`${valor}`);
+            return true;
+        }
+        const esObjeto = typeof valor === "object" && valor !== null;
+        if(esObjeto){
+            const datoTemporal = buscarPropiedad(valor,valorBuscado)
+            if(datoTemporal === true){
+                return true;
+            }
+        }
+
+
+    }
+    return false;
+}
+console.log(buscarPropiedad(empleado,"Argentina"))
+    </script>
+</body>
+</html>

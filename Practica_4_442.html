@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+<title>Pestaña name </title>
+</head>
+<body>
+    <header>
+        <h1> titulaso</h1>
+    </header>
+    <main>
+        <section>
+            <article></article>
+        </section>
+        <aside>
+
+        </aside>
+    </main>
+    <script>
+const clientes = [
+    { nombre: "   pedro  ", clave: "xyz789 " },
+    { nombre: "SOFIA   ", clave: "  clave22" },
+    { nombre: "  martin", clave: "seg456  " }
+];
+const limpiar= parametro => parametro.trim();
+const capitalizar= parametro => parametro.charAt(0).toUpperCase() + parametro.slice(1).toLowerCase();
+const encriptar = parametro => parametro.split('')
+.map(letra=>String.fromCharCode(letra.charCodeAt(0)+1))
+.join("");
+
+function pipeline(...funciones){
+    return function(valorInicial){
+        return funciones.reduce((valor_en_reduce,funcion)=>{
+            return funcion(valor_en_reduce);
+        },valorInicial)
+    }
+}
+const pipeline1= pipeline(limpiar,capitalizar);
+const pipeline2= pipeline(limpiar,encriptar);
+
+const resultado = clientes.map(obj_iterado=>{
+    return {
+        nombre: pipeline1(obj_iterado.nombre),
+        encriptado: pipeline2(obj_iterado.clave)
+    }
+});
+
+console.log("Veamos todo ",resultado);
+    </script>
+    <footer></footer>
+</body>
+</html>

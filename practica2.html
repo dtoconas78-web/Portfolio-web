@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Nombre_Pestaña_Practica2</title>
+    </head>
+    <body>
+        <header>
+            <h1>Super Titulo grande</h1>
+            <p>Veamos un pequeño bienvenida</p>
+        </header>
+        <main>
+        
+        </main>
+
+        <script>
+        const productos = [
+        { nombre: "Notebook", precio: 1200, stock: 5 },
+        { nombre: "Mouse", precio: 25, stock: 0 },
+        { nombre: "Teclado", precio: 45, stock: 10 },
+        { nombre: "Monitor", precio: 350, stock: 3 },
+        { nombre: "Webcam", precio: 80, stock: 0 },
+        { nombre: "Auriculares", precio: 60, stock: 8 }
+        ];
+        const disponible = productos
+        .filter(producto_iterado => producto_iterado.stock > 0)
+        .map(productoFiltrado =>{
+            return {nombre:productoFiltrado.nombre,precio:productoFiltrado.precio}
+        });
+        console.log("Concatenamiento de filter y map ",disponible);
+        </script>
+    </body>
+</html>

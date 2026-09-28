@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Practica_Performance_Observer</title>
+    <style>
+      #monitor{
+        border: 2px solid #333;
+        padding: 15px;
+        font-family: monospace;
+        white-space: pre-wrap;
+        margin-top: 20px;
+      }
+    </style>
+</head>
+<body>
+    <h1>Performance Monitor</h1>
+
+    <button id="btnTareaPesada">Ejecutar tarea pesada</button>
+    <button id="btnLayoutShift">Generar el Layout Shift</button>
+    <button id="btnRecurso">Cargar recurso lento</button>
+
+    <div id="monitor">Esperando eventos...</div>
+    <pre id="panelResumen"></pre>
+    <h2>Puntuación: <span id="puntajeTexto">100</span>/100</h2>
+
+<script>
+    const btnTareaPesada = document.getElementById("btnTareaPesada");
+
+    btnTareaPesada.addEventListener("click", () => {
+        const inicio = Date.now();
+
+        while (Date.now() - inicio < 1500) {
+            // no hace nada, solo ocupamos procesador
+        }
+    });
+
+    const btnLayoutShift = document.getElementById("btnLayoutShift");
+
+    btnLayoutShift.addEventListener("click", () => {
+        const nuevoDiv = document.createElement("div");
+        nuevoDiv.textContent = "Contenido nuevo insertado Arriba";
+        nuevoDiv.style.backgroundColor = "orange";
+        nuevoDiv.style.padding = "20px";
+        nuevoDiv.style.fontSize = "20px";
+
+        document.body.insertBefore(nuevoDiv, document.body.firstChild);
+    });
+
+    // NUEVO: botón que carga un recurso pesado real
+    const btnRecurso = document.getElementById("btnRecurso");
+
+    btnRecurso.addEventListener("click", () => {
+        const imagen = document.createElement("img");
+        imagen.src = "https://picsum.photos/2000/1500";
+        imagen.width = 800;
+        document.body.appendChild(imagen);
+        mostrarEvento("Recurso solicitado...");
+    });
+
+    const monitor = document.getElementById("monitor");
+
+    function mostrarEvento(texto) {
+        monitor.textContent += "\n" + texto;
+        console.log(texto);
+    }
+
+    let puntaje = 100;
+    let contadorLongTask = 0;
+    let contadorLayoutShift = 0;
+    let contadorRecursoLento = 0;
+
+    function actualizarPuntaje(descuento) {
+        puntaje -= descuento;
+        if (puntaje < 0) {
+            puntaje = 0;
+        }
+        document.getElementById("puntajeTexto").textContent = puntaje;
+    }
+
+    function actualizarPanelResumen() {
+        const panel = document.getElementById("panelResumen");
+        panel.textContent =
+`PERFORMANCE MONITOR
+--------------------------------
+Long Tasks:      ${contadorLongTask}
+Layout Shifts:   ${contadorLayoutShift}
+Recursos lentos: ${contadorRecursoLento}
+
+Performance:     ${puntaje}/100`;
+    }
+
+    // ===== OBSERVER: LONG TASK (separado) =====
+    if (PerformanceObserver.supportedEntryTypes.includes("longtask")) {
+        const observerLongTask = new PerformanceObserver((lista) => {
+            lista.getEntries().forEach((entrada) => {
+                mostrarEvento(`[LONGTASK]\nDuración: ${Math.round(entrada.duration)} ms`);
+                contadorLongTask++;
+
+                if (entrada.duration > 1000) {
+                    actualizarPuntaje(20);
+                } else if (entrada.duration > 500) {
+                    actualizarPuntaje(10);
+                }
+
+                actualizarPanelResumen();
+            });
+        });
+
+        observerLongTask.observe({ type: "longtask", buffered: true });
+    }
+
+    // ===== OBSERVER: LAYOUT SHIFT (separado, con filtro hadRecentInput) =====
+    if (PerformanceObserver.supportedEntryTypes.includes("layout-shift")) {
+        const observerLayout = new PerformanceObserver((lista) => {
+            lista.getEntries().forEach((entrada) => {
+                // Ignoramos cambios provocados por interacción del usuario
+                if (entrada.hadRecentInput) {
+                    return;
+                }
+
+                mostrarEvento(`[LAYOUT SHIFT]\nValor: ${entrada.value.toFixed(2)}`);
+                contadorLayoutShift++;
+
+                if (entrada.value > 0.25) {
+                    actualizarPuntaje(15);
+                }
+
+                actualizarPanelResumen();
+            });
+        });
+
+        observerLayout.observe({ type: "layout-shift", buffered: true });
+    }
+
+    // ===== OBSERVER: RESOURCE (separado) =====
+    if (PerformanceObserver.supportedEntryTypes.includes("resource")) {
+        const observerResource = new PerformanceObserver((lista) => {
+            lista.getEntries().forEach((entrada) => {
+                if (entrada.duration > 1000) {
+                    mostrarEvento(`[RECURSO LENTO]\n${entrada.name}\nDuración: ${Math.round(entrada.duration)} ms`);
+                    contadorRecursoLento++;
+                    actualizarPuntaje(5);
+                    actualizarPanelResumen();
+                }
+            });
+        });
+
+        observerResource.observe({ type: "resource", buffered: true });
+    }
+
+    // ===== OBSERVER: NAVIGATION (separado) =====
+    if (PerformanceObserver.supportedEntryTypes.includes("navigation")) {
+        const observerNavigation = new PerformanceObserver((lista) => {
+            lista.getEntries().forEach((entrada) => {
+                mostrarEvento(`[NAVIGATION]\nDOM Content Loaded: ${Math.round(entrada.domContentLoadedEventEnd)} ms\nLoad Event: ${Math.round(entrada.loadEventEnd)} ms`);
+                actualizarPanelResumen();
+            });
+        });
+
+        observerNavigation.observe({ type: "navigation", buffered: true });
+    }
+
+    // Mostrar el panel inicial, aunque todavía no haya eventos
+    actualizarPanelResumen();
+</script>
+</body>
+</html>

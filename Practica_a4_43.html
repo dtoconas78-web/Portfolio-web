@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+    <title>La pestaña a4_43</title>
+    </head>
+    
+    <body>
+        <header>
+        </header>
+        <nav></nav>
+        <main></main>
+        <footer>
+            <p>&copy; mi COPYRIGHT</p>
+        </footer>
+        <script>
+        const matrizPractica = [
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 16]
+        ];
+        const diagonal1 = matrizPractica.map((fila,indice)=>{
+            return fila[indice];
+        })
+        console.log("Veamos ",diagonal1);
+        //n-1-indice para diagonal2;
+        const n = matrizPractica.length
+        const diagonal2 = matrizPractica.map((fila,indice)=>{
+            return fila[n-1-indice];
+        });
+        console.log("Diagonal 2",diagonal2);
+        //si no especificas el valor de total 
+        //toma el primer valor de la vuelta y se salta la primera vuelta
+        const sumafinal = [...diagonal1,...diagonal2]
+        .reduce((total,numero)=>{
+            return total + numero
+        },0);
+        console.log("Final ",sumafinal);
+        </script>
+    </body>
+</html>

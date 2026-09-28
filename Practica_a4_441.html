@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Pestaña name a4_441 practica</title>
+    </head>
+    <body>
+        <script>
+const libro={
+    titulo: "La illiada",
+    autor: "Homero",
+    anio: 2000,
+    descripcion(){
+        console.log(`el libro ${this.titulo}, su autor es ${this.autor} y fue publicado en el año ${this.anio}`)
+    }
+   }
+
+libro.descripcion();
+
+const cuentaBancaria={
+    saldo:750,
+    titular:"Farid",
+    depositar(monto){
+        this.saldo = this.saldo + monto;
+        return this.saldo;
+    },
+    retirar(monto){
+        this.saldo = this.saldo - monto
+        return this.saldo;
+    }
+}
+console.log("Su operacion es depositar");
+console.log(cuentaBancaria.depositar(189));
+console.log("Retirar ");
+console.log(cuentaBancaria.retirar(150));
+
+const rectangulo={
+    base:14,
+    altura:9,
+    area(){
+        return this.base * this.altura;
+    },
+    perimetro(){
+        return 2 * (this.base * this.altura);
+    }
+}
+console.log("Su area es de ",rectangulo.area());
+console.log("Su perimetro es de ",rectangulo.perimetro());
+const inventario = {
+teclado: { precio: 50000, stock: 10 },
+mouse: { precio: 25000, stock: 20 },
+monitor: { precio: 180000, stock: 5 },
+pava: { precio: 1500, stock: 0 }
+};
+const totalInventario = Object.entries(inventario).reduce((total,[clave,valor])=>{
+    return total = total + (valor.precio * valor.stock);
+},0);
+console.log(totalInventario);
+const ver = Object.entries(inventario);
+console.log("Saber como esta el array ",ver);
+const mascaro = Object.entries(inventario).reduce((primer_valor,[clave,valor])=>{
+    if(primer_valor[1].precio >valor.precio){
+        return primer_valor;
+    }else{
+        return [clave,valor];
+    }
+});
+console.log("el mas caro ",mascaro);
+
+const sinstock=Object.entries(inventario).filter(([clave,valor])=>{
+    if(valor.stock === 0){
+        return true;
+    }else{
+        return false;
+    }
+});
+console.log("Sin stock ",sinstock);
+
+const incremento = Object.entries(inventario).reduce((nuevo,[clave,valor])=>{
+    if(!nuevo[clave]){
+        nuevo[clave] = {
+            precio:Math.round(valor.precio * 1.15),
+            stock:valor.stock}
+    }
+    return nuevo;
+},{});
+console.log("El 15 % mas  ",incremento);
+
+console.log("Deep Equal ");
+const a = {
+    x:10,
+    y:{z:20}
+};
+const b = {
+    x:10,
+    y:{z:20}
+};
+function comparar(obj1,obj2){
+    const clave1 = Object.keys(obj1);
+    const clave2 = Object.keys(obj2);
+    console.log("clave 1 de objt",clave1);
+    console.log("clave 2 de objt",clave2);
+
+    if(clave1.length !== clave2.length){
+        return false;
+    }
+
+    //iterador toma de la lista de claves e cada obj toma x e y de a y b
+    for(const iterador of clave1){
+        const valor1 = obj1[iterador];
+        const valor2 = obj2[iterador];
+        console.log("valor dentro for",valor1);
+        console.log("valor dentro for",valor2);
+        const esObjeto = typeof valor1 === "object" && valor1 !== null;
+        const esObjeto2 = typeof valor2 === "object" && valor2 !== null;
+        if(esObjeto && esObjeto2){
+            if(!comparar(valor1,valor2)){
+                return false;
+            }
+        }else{
+                if(valor1 !== valor2){
+                    return false;
+                }
+            }
+    
+    }
+    return true;
+    
+}
+console.log(comparar(a,b));
+
+console.log("Mio merge --.------------");
+const obj1 =
+{
+    usuario:{
+        nombre:"Ana",
+        edad:20
+    },
+    activo:true
+}
+const obj2 =
+{
+    usuario:{
+        ciudad:"Mendoza"
+    }
+}
+function merge(obj1,obj2){
+    const combinado = {...obj1};
+    
+    for(const clave of Object.keys(obj2)){
+        const dato1 = obj1[clave];
+        const dato2 = obj2[clave];
+
+        const esObjeto = typeof dato1 === "object" && dato1 !== null;
+        const esObjeto2 = typeof dato2 === "object" && dato2 !== null;
+        if(esObjeto && esObjeto2){
+            combinado[clave] =merge(dato1,dato2);
+        }else{
+            combinado[clave] = dato2;
+        }
+
+    }
+
+    return combinado;
+}
+console.log("exitos  ",merge(obj1,obj2));
+        </script>
+    </body>
+</html>

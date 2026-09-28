@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <meta charset ="UTF-8">
+    <title>Pestaña name</title>
+
+    <body>
+        <script>
+            const productos=[
+               {nombre:"shampoo",
+                categoria:"limpieza",
+                precio:725,
+                stock:45
+               },
+               {nombre:"jabon",
+                categoria:"limpieza",
+                precio:150,
+                stock:65
+               },
+               {nombre:"mouse",
+                categoria:"Perifericos",
+                precio:300,
+                stock:0
+               },
+               {nombre:"bifeChorizo",
+                categoria:"carnes",
+                precio:150000,
+                stock:2
+               },
+            ];
+            //muy similar forEach a map solo forEach no esta obligado a devolver nda;
+        //productos.forEach(objeto_iterado=>console.log("ver ",objeto_iterado))
+        console.log("Punto 1 ",productos.map(iterado=>iterado));
+        console.log("punto 2 ",productos.map(iterado=>{
+            return iterado.nombre;
+        }));
+        console.log("Punto 3 ",productos.filter(iterado=>{
+            return iterado.precio > 100000;
+        }));
+        console.log("Punto 4 ",productos.filter(iterado=>{
+            return iterado.stock >0;
+        }));
+        console.log("Punto 5 ",productos.reduce((total,iterado)=>{
+            return total + (iterado.precio * iterado.stock);
+        },0));
+        console.log("Punto 6",productos.reduce((mascaro,iterado)=>{
+                if(mascaro.precio>iterado.precio){
+                    return mascaro;
+                }else{
+                    return iterado;
+                }   
+        }));
+        console.log("Punto 7",productos.reduce((masbarato,iterado)=>{
+                if(masbarato.precio < iterado.precio){
+                    return masbarato;
+                }else{
+                    return iterado;
+                }   
+        }))
+        console.log("Punto 8 ",productos.filter(iterado=>{
+            return iterado.categoria === "Perifericos";
+        }));
+
+        console.log("Punto 9",productos.map(iterado=>{
+            return {nombre:iterado.nombre,precio:iterado.precio};
+        }));
+        console.log("Punto 10 ",productos.sort((a,b)=>a.precio -b.precio));
+        
+        console.log("Punto 11" ,productos.filter(iterado =>{
+            return iterado.stock < 5;
+        }));
+        console.log("Punto 12 ",productos.reduce((total,obj_iterado)=>{
+            return total + obj_iterado.precio;
+        },0)/productos.length);
+        console.log("Punto 13 ", productos.reduce((group,obj_iterado)=>{
+            const categoria = obj_iterado.categoria;
+            if(!group[categoria]){
+                group[categoria]=[];
+            }
+            group[categoria].push(obj_iterado.nombre);
+            return group;
+        },{}));
+        </script>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Pestaña ver 4_443</title>
+    </head>
+    <style>
+        .Completad_id{
+            text-decoration: line-through;
+        }
+    </style>
+    <body>
+        <header>
+            <h1>To-Do List</h1>
+        </header>
+        <main>
+            <p>el input textfield</p>
+            <input type="text" id="inputTarea" placeholder="Escribe una tarea">
+            <button id="btnAgregar">Agregar</button>
+            
+            <ul id="listaTareas"></ul>
+
+            <h3>Registro de cambios en el DOM:</h3>
+            <pre id="registro">Esperando cambios en el DOM</pre>
+        </main>
+        <script>
+            //el DOM es el panel de control para manejar etiquetas en JS
+        const textfield = document.getElementById("inputTarea");
+        const boton = document.getElementById("btnAgregar");
+        const lista =  document.getElementById("listaTareas");
+        const paraffo = document.getElementById("registro");
+
+        boton.addEventListener("click",function(){
+           const texto = textfield.value;
+
+           const nuevo_li= document.createElement("li");
+
+           const span = document.createElement("span");
+           span.textContent = texto;
+
+           const btnCompletar = document.createElement("button");
+           btnCompletar.textContent = "✔";
+
+           const btnEliminar = document.createElement("button");
+           btnEliminar.textContent = "✖";
+           
+           nuevo_li.appendChild(span);
+           nuevo_li.appendChild(btnCompletar);
+           nuevo_li.appendChild(btnEliminar);
+           //nuevo_li.textContent = texto;
+           lista.appendChild(nuevo_li);
+
+            btnCompletar.addEventListener("click",function(){
+                span.classList.toggle("Completad_id");
+            });
+            btnEliminar.addEventListener("click",function(){
+                lista.removeChild(nuevo_li);
+            });
+           textfield.value = "";
+        });
+        
+    const observador = new MutationObserver(function(cambios){
+        cambios.forEach(function(iterado_observer){
+            paraffo.textContent = paraffo.textContent + `\nCambio: ${iterado_observer.type} en ${iterado_observer.target.nodeName}`;
+        });
+    });
+
+        observador.observe(lista,{
+            childList: true,
+            attributes: true,
+            subtree: true
+        });
+
+        </script>
+    </body>
+</html>

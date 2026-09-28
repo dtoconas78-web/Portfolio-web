@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Mi name pestaña</title>
+    </head>
+    <body>
+        <header>
+
+        </header>
+        <div>
+
+        </div>
+        <main>
+            <section>
+                <article>
+
+                </article>
+            </section>
+            <aside>
+
+            </aside>
+        </main>
+        <footer>
+            <p>&copy;Mi copyright crack;</p>
+        </footer>
+
+        <script>
+            const estudiantes = [
+            { nombre: "Ana", nota: 8 },
+            { nombre: "Luis", nota: 5 },
+            { nombre: "Carla", nota: 9 },
+            { nombre: "Juan", nota: 6 },
+            { nombre: "Pedro", nota: 4 }
+            ];
+            const aprobados = estudiantes.filter(iterado=>iterado.nota>=6)
+            .map(iterado=> iterado.nombre);
+            console.log("aprobados ",aprobados);
+            const mayor_a_menor = estudiantes.sort((a,b)=>b.nota-a.nota);
+            console.log("Ordenados de mayor a menor ",mayor_a_menor);
+            const promedio = estudiantes.reduce((promedio,alumno)=>{
+                return promedio = promedio+alumno.nota;
+            },0)/ estudiantes.length;
+            console.log("Promedio de notas ",promedio);
+        </script>
+    </body>
+</html>

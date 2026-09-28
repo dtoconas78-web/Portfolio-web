@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Pestaña name_ practica_a4_3</title>
+    </head>
+<body>
+    <main>
+
+    </main>
+    <script>
+        const numeros = [3,6,9,12,15,18];
+
+        const cubos = numeros
+        .filter(iterado=>iterado % 2 === 0)
+        .map(par=> par ** 3); 
+        console.log("Los pares al Cubo ",cubos);
+
+        const empleados = [
+        { nombre: "Ana", departamento: "Ventas" },
+        { nombre: "Luis", departamento: "IT" },
+        { nombre: "Marta", departamento: "Ventas" },
+        { nombre: "Pedro", departamento: "IT" },
+        { nombre: "Sofía", departamento: "Marketing" }
+        ];
+        const agrupados = empleados.reduce((grupo,iterado)=>{
+            const dpto = iterado.departamento;
+            if(!grupo[dpto]){
+                grupo[dpto]=[];
+            }
+            grupo[dpto].push(iterado.nombre);
+            return grupo;
+        },{});
+        console.log("agrupados ",agrupados);
+    </script>
+</body>
+</html>

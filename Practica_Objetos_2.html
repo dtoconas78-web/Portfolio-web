@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+    <meta charset="UTF-8">
+    <title>Podes pestañar</title>
+    <body>
+        <script>
+const jugadores = [
+    { nombre: "Marta", partidos: [3, 5, 2, 4] },
+    { nombre: "Diego", partidos: [1, 0, 2] },
+    { nombre: "Sofía", partidos: [10, 8, 9, 7, 6] }
+];
+const promediop = jugadores.map(jugador=>{
+    const suma = jugador.partidos.reduce((calculo,numero)=>{
+        return calculo + numero;
+    },0);
+    const promedio = suma/jugador.partidos.length;
+    return {nombre:jugador.nombre,promedio:promedio};
+});
+console.log("Veamos ",promediop);
+const alumnos = [
+    {
+        nombre: "Ana",
+        edad: 20,
+        notas: [8, 9, 7]
+    },
+    {
+        nombre: "Pedro",
+        edad: 22,
+        notas: [6, 5, 7]
+    },
+    {
+        nombre: "Luis",
+        edad: 19,
+        notas: [9, 10, 8]
+    }
+];
+const promedio = alumnos.map(objeto_iterado=>{
+    const suma = objeto_iterado.notas.reduce((suma,numero)=>{
+        return suma + numero;
+    },0);
+    const promedio = suma/objeto_iterado.notas.length;
+    return {nombre:objeto_iterado.nombre,promedio:promedio};
+});
+console.log("MIO ",promedio);
+const aprobados = promedio.filter(alumno=>{
+    return alumno.promedio > 6;
+});
+console.log("Aprobados ",aprobados);
+        </script>
+    </body>
+</html>
