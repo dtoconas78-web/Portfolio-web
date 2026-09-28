@@ -4,39 +4,259 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Web</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --muted: #8b949e;
+            --accent: #3fb950;
+            --accent-dim: #2ea043;
+            --link: #58a6ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: "SFMono-Regular", "Consolas", "Liberation Mono", Menlo, monospace;
+            line-height: 1.6;
+            padding: 32px 16px 64px;
+        }
+
+        .window {
+            max-width: 720px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--surface);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        .titlebar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #010409;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .titlebar-label {
+            margin-left: 8px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .content {
+            padding: 40px 36px 32px;
+        }
+
+        .prompt-line {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 0 0 4px;
+        }
+
+        .prompt-line .user {
+            color: var(--accent);
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 0 6px;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        h1 .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 22px;
+            background: var(--accent);
+            margin-left: 4px;
+            vertical-align: -3px;
+            animation: blink 1.1s steps(1) infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 0 0 36px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-size: 13px;
+            text-transform: lowercase;
+            margin-bottom: 14px;
+        }
+
+        .section-label::before {
+            content: "./";
+            color: var(--accent);
+        }
+
+        .section-label .count {
+            margin-left: auto;
+            color: var(--border);
+        }
+
+        ol.files {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            counter-reset: item;
+            border-top: 1px solid var(--border);
+        }
+
+        ol.files li {
+            counter-increment: item;
+            border-bottom: 1px solid var(--border);
+        }
+
+        ol.files a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 11px 4px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.12s ease, padding-left 0.12s ease;
+            border-radius: 4px;
+        }
+
+        ol.files a::before {
+            content: counter(item, decimal-leading-zero);
+            color: var(--muted);
+            font-size: 12px;
+            width: 22px;
+            flex-shrink: 0;
+        }
+
+        ol.files a::after {
+            content: attr(href);
+            margin-left: auto;
+            color: var(--border);
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 40%;
+        }
+
+        ol.files a:hover {
+            background: rgba(88, 166, 255, 0.08);
+            padding-left: 10px;
+        }
+
+        ol.files a:hover::after {
+            color: var(--link);
+        }
+
+        ol.files a:visited {
+            color: var(--text);
+        }
+
+        .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        footer {
+            margin-top: 32px;
+            padding-top: 18px;
+            border-top: 1px dashed var(--border);
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        footer .key {
+            display: inline-block;
+            padding: 1px 7px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: #010409;
+            color: var(--text);
+            font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .content { padding: 28px 20px 24px; }
+            ol.files a::after { display: none; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Portfolio Web</h1>
-        <p>Ejercicios de Programación Web - Farid Toconas</p>
-    </header>
+    <div class="window">
+        <div class="titlebar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="titlebar-label">farid@portfolio: ~/programacion-web</span>
+        </div>
 
-    <main>
-        <h2>Ejercicios</h2>
-        <ol>
-            <li><a href="practica1.html">Práctica 1 - HTML semántico</a></li>
-            <li><a href="practica2.html">Práctica 2</a></li>
-            <li><a href="Practica_a4_2.html">Práctica a4_2</a></li>
-            <li><a href="Practica_a4_3.html">Práctica a4_3</a></li>
-            <li><a href="Practica_a4_4.html">Práctica a4_4</a></li>
-            <li><a href="Practica_a4_41.html">Práctica a4_41</a></li>
-            <li><a href="Practica_a4_42.html">Práctica a4_42</a></li>
-            <li><a href="Practica_a4_43.html">Práctica a4_43</a></li>
-            <li><a href="Practica_a4_44.html">Práctica a4_44</a></li>
-            <li><a href="Practica_a4_441.html">Práctica a4_441</a></li>
-            <li><a href="Practica_4_442.html">Práctica 4_442</a></li>
-            <li><a href="Practica_4_443.html">Práctica 4_443</a></li>
-            <li><a href="Practica_Objetos_2.html">Práctica Objetos 2</a></li>
-            <li><a href="Practica_objetos3.html">Práctica Objetos 3</a></li>
-            <li><a href="Practica_Objetos4.html">Práctica Objetos 4</a></li>
-            <li><a href="Practica_Observer1.html">Práctica Observer 1</a></li>
-            <li><a href="Practica_IntersectionObserver.html">Práctica Intersection Observer</a></li>
-            <li><a href="Practica_PerformanceObserver.html">Práctica Performance Observer</a></li>
-        </ol>
-    </main>
+        <div class="content">
+            <p class="prompt-line"><span class="user">farid@portfolio</span>:~$ cat portfolio.md</p>
+            <h1>Portfolio Web<span class="cursor"></span></h1>
+            <p class="subtitle">Ejercicios de Programación Web — Farid Toconas</p>
 
-    <footer>
-        <p>Los resultados de cada ejercicio se ven en la consola (F12).</p>
-    </footer>
+            <p class="section-label">ejercicios<span class="count">18 archivos</span></p>
+
+            <ol class="files">
+                <li><a href="practica1.html"><span class="name">Práctica 1 — HTML semántico</span></a></li>
+                <li><a href="practica2.html"><span class="name">Práctica 2</span></a></li>
+                <li><a href="Practica_a4_2.html"><span class="name">Práctica a4_2</span></a></li>
+                <li><a href="Practica_a4_3.html"><span class="name">Práctica a4_3</span></a></li>
+                <li><a href="Practica_a4_4.html"><span class="name">Práctica a4_4</span></a></li>
+                <li><a href="Practica_a4_41.html"><span class="name">Práctica a4_41</span></a></li>
+                <li><a href="Practica_a4_42.html"><span class="name">Práctica a4_42</span></a></li>
+                <li><a href="Practica_a4_43.html"><span class="name">Práctica a4_43</span></a></li>
+                <li><a href="Practica_a4_44.html"><span class="name">Práctica a4_44</span></a></li>
+                <li><a href="Practica_a4_441.html"><span class="name">Práctica a4_441</span></a></li>
+                <li><a href="Practica_4_442.html"><span class="name">Práctica 4_442</span></a></li>
+                <li><a href="Practica_4_443.html"><span class="name">Práctica 4_443</span></a></li>
+                <li><a href="Practica_Objetos_2.html"><span class="name">Práctica Objetos 2</span></a></li>
+                <li><a href="Practica_objetos3.html"><span class="name">Práctica Objetos 3</span></a></li>
+                <li><a href="Practica_Objetos4.html"><span class="name">Práctica Objetos 4</span></a></li>
+                <li><a href="Practica_Observer1.html"><span class="name">Práctica Observer 1</span></a></li>
+                <li><a href="Practica_IntersectionObserver.html"><span class="name">Práctica Intersection Observer</span></a></li>
+                <li><a href="Practica_PerformanceObserver.html"><span class="name">Práctica Performance Observer</span></a></li>
+            </ol>
+
+            <footer>
+                Los resultados de cada ejercicio se ven en la consola — presioná <span class="key">F12</span>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>
